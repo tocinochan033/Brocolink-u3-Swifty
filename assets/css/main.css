@@ -1,0 +1,145 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary: #0ea5e9;
+    --text: #e5e7eb;
+    --text-light: #9ca3af;
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --border: #334155;
+    --danger: #ef4444;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark);
+    color: var(--text);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Botón flotante pegado al extremo derecho */
+.logout-floating {
+    position: fixed;
+    top: 0.35rem;
+      right: 0.35rem; /* ← margen derecho real */
+    margin-left: 30px;
+    z-index: 100;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    width: 150px;
+    height: 30px;
+    border-radius: 10px;
+    background: rgba(250, 0, 0, 0.08);
+    text-decoration: none;
+    color: var(--text-light);
+    border: 1px solid rgba(239, 68, 68, 0.08);
+    border-right: none;
+    transition: all 0.2s ease;
+    box-shadow: -2px 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--text);
+    transform: scale(1.1);
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.logout-icon {
+    font-size: 0.8rem;
+}
+
+.logout-text {
+    
+}
+
+@media (max-width: 768px) {
+    .logout-floating {
+        top: 0.2rem;
+        right: 0;
+    }
+    
+    .logout-btn {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* ========================= */
+/* Tarjetas del dashboard ✨ */
+/* ========================= */
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 1rem;
+}
+
+.action-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    border-color: var(--primary);
+}
+
+.card-icon-container {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.card-description {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.card-link {
+    font-weight: 600;
+    color: var(--secondary);
+    font-size: 0.95rem;
+    margin-top: auto;
+    transition: color 0.2s ease;
+}
+
+.action-card:hover .card-link {
+    color: var(--primary);
+}

@@ -1,0 +1,683 @@
+openapi: 3.0.3
+info:
+  title: Swift Invoice API
+  version: 1.0.0
+  description: API REST para clientes, empresas, productos, ventas y facturas de Swift Invoice.
+servers:
+  - url: /Proyecto-Swifty/api/v1
+    description: URL local de Apache; ajusta el prefijo al desplegar en otra ruta
+tags:
+  - name: Auth
+  - name: Clients
+  - name: Companies
+  - name: Products
+  - name: Sales
+  - name: Invoices
+  - name: Catalogs
+paths:
+  /auth/csrf:
+    get:
+      tags: [Auth]
+      summary: Obtener token CSRF para el inicio de sesión
+      responses:
+        '200':
+          description: Token asociado a la cookie de sesión
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsrfResponse'
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Iniciar sesion
+      security: [{ csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Sesion iniciada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Cerrar sesión
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      responses:
+        '204':
+          description: Sesión cerrada
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /clients:
+    get:
+      tags: [Clients]
+      summary: Listar clientes
+      security: [{ sessionAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Clientes encontrados
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/TotalCount'
+            X-Limit:
+              $ref: '#/components/headers/Limit'
+            X-Offset:
+              $ref: '#/components/headers/Offset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post:
+      tags: [Clients]
+      summary: Crear cliente
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientInput'
+      responses:
+        '201':
+          description: Cliente creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /clients/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Clients]
+      summary: Consultar cliente
+      security: [{ sessionAuth: [] }]
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Clients]
+      summary: Actualizar cliente
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientInput'
+      responses:
+        '200':
+          description: Cliente actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Clients]
+      summary: Eliminar cliente
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      responses:
+        '204':
+          description: Cliente eliminado
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /companies:
+    get:
+      tags: [Companies]
+      summary: Listar empresas
+      security: [{ sessionAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Empresas encontradas
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/TotalCount'
+            X-Limit:
+              $ref: '#/components/headers/Limit'
+            X-Offset:
+              $ref: '#/components/headers/Offset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+    post:
+      tags: [Companies]
+      summary: Crear empresa
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyInput'
+      responses:
+        '201':
+          description: Empresa creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+  /companies/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Companies]
+      summary: Consultar empresa
+      security: [{ sessionAuth: [] }]
+      responses:
+        '200':
+          description: Empresa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Companies]
+      summary: Actualizar empresa
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyInput'
+      responses:
+        '200':
+          description: Empresa actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+    delete:
+      tags: [Companies]
+      summary: Eliminar empresa
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      responses:
+        '204':
+          description: Empresa eliminada
+
+  /products:
+    get:
+      tags: [Products]
+      summary: Listar productos y servicios
+      security: [{ sessionAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Productos encontrados
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/TotalCount'
+            X-Limit:
+              $ref: '#/components/headers/Limit'
+            X-Offset:
+              $ref: '#/components/headers/Offset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags: [Products]
+      summary: Crear producto o servicio
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /products/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Products]
+      summary: Consultar producto
+      security: [{ sessionAuth: [] }]
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Products]
+      summary: Actualizar producto
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      tags: [Products]
+      summary: Eliminar producto
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      responses:
+        '204':
+          description: Producto eliminado
+
+  /sales:
+    get:
+      tags: [Sales]
+      summary: Listar ventas
+      security: [{ sessionAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Ventas encontradas
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/TotalCount'
+            X-Limit:
+              $ref: '#/components/headers/Limit'
+            X-Offset:
+              $ref: '#/components/headers/Offset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+    post:
+      tags: [Sales]
+      summary: Registrar venta y calcular totales
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaleInput'
+      responses:
+        '201':
+          description: Venta registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /sales/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Sales]
+      summary: Consultar venta con detalle
+      security: [{ sessionAuth: [] }]
+      responses:
+        '200':
+          description: Venta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Sales]
+      summary: Eliminar venta
+      security: [{ sessionAuth: [], csrfToken: [] }]
+      responses:
+        '204':
+          description: Venta eliminada
+
+  /invoices:
+    get:
+      tags: [Invoices]
+      summary: Listar facturas
+      security: [{ sessionAuth: [] }]
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Facturas encontradas
+          headers:
+            X-Total-Count:
+              $ref: '#/components/headers/TotalCount'
+            X-Limit:
+              $ref: '#/components/headers/Limit'
+            X-Offset:
+              $ref: '#/components/headers/Offset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+  /invoices/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Invoices]
+      summary: Consultar factura
+      security: [{ sessionAuth: [] }]
+      responses:
+        '200':
+          description: Factura encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /catalogs/business-types:
+    get:
+      tags: [Catalogs]
+      summary: Listar tipos de empresa
+      responses:
+        '200':
+          description: Catalogo de tipos de empresa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogItem'
+  /catalogs/tax-regimes:
+    get:
+      tags: [Catalogs]
+      summary: Listar regimenes fiscales
+      responses:
+        '200':
+          description: Catalogo de regimenes fiscales
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogItem'
+
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: PHPSESSID
+    csrfToken:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  headers:
+    TotalCount:
+      description: Total de elementos antes de paginar
+      schema:
+        type: integer
+    Limit:
+      description: Número máximo de elementos en esta respuesta
+      schema:
+        type: integer
+    Offset:
+      description: Número de elementos omitidos
+      schema:
+        type: integer
+  responses:
+    Unauthorized:
+      description: Credenciales invalidas o sesion ausente
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: Datos de entrada invalidos
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [message]
+          properties:
+            message:
+              type: string
+            fields:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+    CsrfResponse:
+      type: object
+      required: [csrf_token]
+      properties:
+        csrf_token:
+          type: string
+          minLength: 64
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          maxLength: 50
+        password:
+          type: string
+          format: password
+    AuthResponse:
+      type: object
+      required: [user, csrf_token]
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        csrf_token:
+          type: string
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        username: { type: string }
+        first_name: { type: string }
+        last_name: { type: string }
+        phone: { type: string, nullable: true }
+        email: { type: string, format: email }
+        created_at: { type: string, format: date-time }
+    ClientInput:
+      type: object
+      required: [first_name, last_name]
+      properties:
+        first_name: { type: string, maxLength: 50 }
+        last_name: { type: string, maxLength: 50 }
+        mother_last_name: { type: string, maxLength: 50, nullable: true }
+        phone: { type: string, maxLength: 20, nullable: true }
+        email: { type: string, format: email, nullable: true }
+        rfc: { type: string, maxLength: 13, pattern: '^(?:|[A-Za-zÑ&0-9]{12,13})$', nullable: true }
+        address: { type: string, maxLength: 500, nullable: true }
+        tax_regime_id: { type: integer, nullable: true }
+    Client:
+      allOf:
+        - $ref: '#/components/schemas/ClientInput'
+        - type: object
+          properties:
+            id: { type: integer }
+            created_at: { type: string, format: date-time }
+    CompanyInput:
+      type: object
+      required: [business_name, rfc, fiscal_address]
+      properties:
+        business_name: { type: string, maxLength: 100 }
+        rfc: { type: string, minLength: 12, maxLength: 13, pattern: '^[A-Za-zÑ&0-9]{12,13}$' }
+        fiscal_address: { type: string, maxLength: 500 }
+        phone: { type: string, maxLength: 20, nullable: true }
+        email: { type: string, format: email, nullable: true }
+        legal_representative: { type: string, maxLength: 100, nullable: true }
+        business_type_id: { type: integer, nullable: true }
+        tax_regime_id: { type: integer, nullable: true }
+    Company:
+      allOf:
+        - $ref: '#/components/schemas/CompanyInput'
+        - type: object
+          properties:
+            id: { type: integer }
+            logo_path: { type: string, nullable: true }
+            created_at: { type: string, format: date-time }
+    ProductInput:
+      type: object
+      required: [name, type, price]
+      properties:
+        name: { type: string, maxLength: 100 }
+        description: { type: string, maxLength: 10000, nullable: true }
+        type: { type: string, enum: [Producto, Servicio] }
+        price: { type: number, format: double, minimum: 0, maximum: 99999999.99 }
+    Product:
+      allOf:
+        - $ref: '#/components/schemas/ProductInput'
+        - type: object
+          properties:
+            id: { type: integer }
+            created_at: { type: string, format: date-time }
+    SaleInput:
+      type: object
+      required: [client_id, client_type, sale_date, items]
+      properties:
+        client_id: { type: integer, minimum: 1 }
+        client_type: { type: string, enum: [person, company] }
+        sale_date: { type: string, format: date }
+        tax_percentage: { type: number, format: double, minimum: 0, default: 16 }
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SaleDetailInput'
+    SaleDetailInput:
+      type: object
+      required: [product_id, quantity]
+      properties:
+        product_id: { type: integer, minimum: 1 }
+        quantity: { type: integer, minimum: 1 }
+        tax_rate:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Si se omite, se usa tax_percentage de la venta
+    Sale:
+      type: object
+      properties:
+        id: { type: integer }
+        client_id: { type: integer }
+        client_type: { type: string, enum: [person, company] }
+        sale_date: { type: string, format: date }
+        subtotal: { type: number, format: double }
+        tax_percentage: { type: number, format: double }
+        tax_amount: { type: number, format: double }
+        total: { type: number, format: double }
+        created_at: { type: string, format: date-time }
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaleDetail'
+    SaleDetail:
+      allOf:
+        - $ref: '#/components/schemas/SaleDetailInput'
+        - type: object
+          properties:
+            id: { type: integer }
+            sale_id: { type: integer }
+            unit_price: { type: number, format: double }
+            subtotal: { type: number, format: double }
+    Invoice:
+      type: object
+      properties:
+        id: { type: integer }
+        sale_id: { type: integer }
+        invoice_number: { type: string, maxLength: 20 }
+        invoice_date: { type: string, format: date }
+        pdf_path: { type: string, nullable: true }
+        created_at: { type: string, format: date-time }
+        sale:
+          $ref: '#/components/schemas/Sale'
+    CatalogItem:
+      type: object
+      required: [id, name]
+      properties:
+        id: { type: integer }
+        name: { type: string }

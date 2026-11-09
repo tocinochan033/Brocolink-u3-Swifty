@@ -1,0 +1,191 @@
+:root {
+    --primary: #2563eb;
+    --secondary: #0ea5e9;
+    --text: #e5e7eb;
+    --text-light: #9ca3af;
+    --bg-dark: #0f172a;
+    --bg-darker: #020617;
+    --card-bg: #1e293b;
+    --card-hover: #334155;
+    --border-dark: #334155;
+    --shadow: 0 10px 32px 0 rgba(20, 30, 45, 0.45);
+    --shadow-hover: 0 16px 36px 0 rgba(37,99,235,0.19);
+    --radius-lg: 1.7rem;
+    --radius-xl: 2.5rem;
+}
+
+body, .dashboard-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    min-height: 100vh;
+    color: var(--text);
+}
+
+.dashboard-container {
+    padding: 2.5rem 1.5rem 3rem;
+}
+
+.welcome-banner {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--bg-darker) 0%, var(--card-bg) 100%);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    border: 1.5px solid var(--border-dark);
+    position: relative;
+    overflow: hidden;
+}
+.welcome-banner::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+.welcome-heading {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+.welcome-message { color: var(--text-light); }
+
+/* Carrusel estático de 3 tarjetas */
+.carousel {
+    width: 100%;
+    max-width: 1200px;
+    margin: 2.5rem auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 420px;
+}
+.carousel-track {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    gap: 2.2rem;
+    pointer-events: none;
+}
+
+/* Tarjetas (solo tres siempre) */
+.action-card {
+    min-width: 370px;
+    max-width: 370px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 2.2rem 2rem;
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    border: none;
+    opacity: 0;
+    transform: scale(0.87);
+    transition: opacity 0.5s, transform 0.5s, box-shadow 0.5s, background 0.5s;
+    z-index: 1;
+    pointer-events: none;
+    position: relative;
+}
+
+/* Central: activa, siempre centrada y resaltada */
+.action-card.active {
+    opacity: 1;
+    transform: scale(1.07);
+    box-shadow: 0 16px 38px 0 rgba(37,99,235,0.21), 0 0 0 2.2px var(--primary);
+    background: var(--card-hover);
+    z-index: 3;
+    pointer-events: auto;
+}
+
+/* Laterales (prev y next) */
+.action-card.prev,
+.action-card.next {
+    opacity: 0.63;
+    transform: scale(0.93);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Seguridad: ocultar si JS la llega a dejar en blanco */
+.action-card:not(.active):not(.prev):not(.next) {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Contenido de la tarjeta */
+.card-icon-container {
+    width: 66px; height: 66px; border-radius: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2rem; font-size: 2rem;
+    background: rgba(37, 99, 235, 0.12);
+}
+.card-title {
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+.card-description { color: var(--text-light); font-size: 1.02rem; margin-bottom: 2rem; }
+.card-link {
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s, transform 0.2s;
+    position: relative;
+    padding-top: 0.22rem;
+}
+.card-link:hover { color: var(--primary); transform: translateX(3px); }
+
+/* Botones del carrusel */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--card-bg);
+    color: var(--text-light);
+    border: none;
+    font-size: 2.2rem;
+    padding: 0.25em 0.7em;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 1.7rem;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.13);
+}
+.carousel-btn:hover {
+    background: var(--primary);
+    color: #fff;
+}
+.carousel-btn.prev { left: -3.2rem; }
+.carousel-btn.next { right: -3.2rem; }
+
+@media (max-width: 900px) {
+    .carousel { max-width: 98vw; min-height: 260px; }
+    .carousel-track { gap: 0.7rem; }
+    .action-card, .carousel-track .action-card {
+        min-width: 80vw;
+        max-width: 92vw;
+    }
+    .carousel-btn.prev { left: -1.1rem; }
+    .carousel-btn.next { right: -1.1rem; }
+}
+@media (max-width: 600px) {
+    .carousel {
+        min-height: 120px;
+        padding: 0;
+    }
+    .carousel-track .action-card, .action-card {
+        min-width: 96vw;
+        max-width: 98vw;
+        padding: 1.1rem 0.7rem;
+    }
+}

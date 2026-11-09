@@ -1,0 +1,127 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --secondary: #0ea5e9;
+    --text: #e5e7eb;
+    --text-light: #9ca3af;
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --card-hover: #334155;
+    --border: #334155;
+    --danger: #ef4444;
+    --success: #10b981;
+    --radius: 0.5rem;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+/* Encabezado */
+.card-header {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white;
+    padding: 1rem 1.5rem;
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+}
+
+.card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Tabla */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--card-bg);
+    color: var(--text);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+}
+
+.styled-table thead {
+    background-color: var(--primary-dark);
+    color: white;
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background-color: var(--bg-dark);
+}
+
+.styled-table tbody tr:hover {
+    background-color: var(--card-hover);
+}
+
+/* Botones */
+.btnAgregar,
+.btnEdit,
+.btnDelete {
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.2s ease-in-out;
+}
+
+.btnAgregar { background: var(--success); color: white; }
+.btnEdit { background: var(--primary); color: white; }
+.btnDelete { background: var(--danger); color: white; }
+
+.btnAgregar:hover { background: #059669; }
+.btnEdit:hover { background: var(--primary-dark); }
+.btnDelete:hover { background: #b91c1c; }
+
+/* Alertas */
+.alert-success {
+    background-color: #047857;
+    color: white;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius);
+}
+
+/* DataTables */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.4rem;
+    border-radius: var(--radius);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius);
+    margin: 0 0.2rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: var(--primary);
+    color: white !important;
+    border: none;
+}
+
+.dataTables_wrapper .dataTables_info {
+    color: var(--text-light);
+}

@@ -1,0 +1,342 @@
+/* Variables actualizadas */
+:root {
+    --primary: #4e73df;
+    --primary-dark: #2e59d9;
+    --primary-light: rgba(78, 115, 223, 0.1);
+    --secondary: #1cc88a;
+    --secondary-dark: #17a673;
+    --text: #3a3b45;
+    --text-light: #858796;
+    --light-gray: #f8f9fc;
+    --gray: #dddfeb;
+    --white: #ffffff;
+    --shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    --shadow-hover: 0 0.5rem 1.5rem 0 rgba(58, 59, 69, 0.2);
+    --transition: all 0.2s ease-in-out;
+}
+
+/* Header principal - Versión mejorada */
+.app-header {
+    background: var(--white);
+    box-shadow: var(--shadow);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    height: 4.375rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-content {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    height: 100%;
+}
+
+/* Logo - Versión mejorada */
+.app-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    gap: 0.75rem;
+    letter-spacing: -0.5px;
+    transition: var(--transition);
+}
+
+.app-logo:hover {
+    color: var(--primary-dark);
+    transform: translateX(-2px);
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+    transition: var(--transition);
+}
+
+.app-logo:hover .logo-icon {
+    transform: rotate(-10deg) scale(1.1);
+}
+
+/* Menú de usuario - Versión mejorada */
+.user-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-greeting {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.user-greeting:hover {
+    background: var(--primary-light);
+}
+
+.user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gray);
+    transition: var(--transition);
+}
+
+.user-greeting:hover .user-avatar {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.9rem;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-caret {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    transition: var(--transition);
+}
+
+.user-greeting:hover .dropdown-caret {
+    color: var(--primary);
+    transform: translateY(2px);
+}
+
+/* Dropdown mejorado */
+.dropdown-options {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    background: var(--white);
+    border-radius: 0.35rem;
+    box-shadow: var(--shadow-hover);
+    width: 220px;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    transform: translateY(10px);
+    border: 1px solid var(--gray);
+    z-index: 1000;
+}
+
+.user-menu:hover .dropdown-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-options::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 1.5rem;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent var(--white) transparent;
+    filter: drop-shadow(0 -2px 1px rgba(0,0,0,0.03));
+}
+
+.dropdown-divider {
+    height: 0;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    border-top: 1px solid var(--gray);
+}
+
+.dropdown-header {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dropdown-options a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    gap: 0.75rem;
+    transition: var(--transition);
+}
+
+.dropdown-options a:hover {
+    background: var(--light-gray);
+    color: var(--primary);
+    padding-left: 1.75rem;
+}
+
+.dropdown-icon {
+    width: 20px;
+    text-align: center;
+    color: var(--text-light);
+    transition: var(--transition);
+}
+
+.dropdown-options a:hover .dropdown-icon {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+/* Barra de navegación mejorada */
+.app-navigation {
+    background: var(--primary);
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.nav-menu {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    list-style: none;
+    padding: 0 1.5rem;
+}
+
+.nav-menu li {
+    position: relative;
+    flex: 1;
+    text-align: center;
+}
+
+.nav-menu li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 30px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-menu a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.8rem 0.5rem;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    transition: var(--transition);
+    gap: 0.4rem;
+    position: relative;
+}
+
+.nav-menu a:hover, 
+.nav-menu a.active {
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-menu a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: var(--white);
+    border-radius: 3px 3px 0 0;
+}
+
+.nav-icon {
+    font-size: 1.3rem;
+    transition: var(--transition);
+}
+
+.nav-menu a:hover .nav-icon {
+    transform: translateY(-3px);
+}
+
+/* Responsive mejorado */
+@media (max-width: 992px) {
+    .header-content {
+        padding: 0.8rem 1rem;
+    }
+    
+    .app-logo {
+        font-size: 1.1rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.5rem;
+    }
+    
+    .user-name {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        padding: 0;
+        overflow-x: auto;
+        scrollbar-width: none; /* Firefox */
+    }
+    
+    .nav-menu::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+    
+    .nav-menu li {
+        min-width: 80px;
+        flex: none;
+    }
+    
+    .nav-menu li:not(:last-child)::after {
+        display: none;
+    }
+    
+    .nav-menu a span:not(.nav-icon) {
+        font-size: 0.75rem;
+    }
+    
+    .nav-icon {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .app-logo span:not(.logo-icon) {
+        display: none;
+    }
+    
+    .user-name {
+        display: none;
+    }
+    
+    .dropdown-options {
+        width: 200px;
+    }
+    
+    .nav-menu a {
+        padding: 0.6rem 0.3rem;
+    }
+    
+    .nav-menu a span:not(.nav-icon) {
+        font-size: 0.7rem;
+    }
+}
